@@ -43,7 +43,7 @@ button {
   cursor:pointer;
   border-radius:8px;
   font-size:14px;
-  min-width:70px;
+  min-width:80px;
 }
 
 button.active {
@@ -92,6 +92,7 @@ th {
   background:#222;
 }
 
+/* 列幅固定 */
 th:nth-child(1),
 td:nth-child(1) { width:35%; }
 
@@ -104,7 +105,6 @@ td:nth-child(3) { width:20%; }
 th:nth-child(4),
 td:nth-child(4) { width:30%; }
 
-/* スマホ */
 @media (max-width:600px){
   button {
     flex:1 1 30%;
@@ -128,9 +128,10 @@ td:nth-child(4) { width:30%; }
   <div class="filter-group">
     <strong>タイプ</strong>
     <div class="button-container">
-      <button onclick="toggleType('基礎技')" id="type-基礎技">基礎技</button>
+      <button onclick="toggleType('基本技')" id="type-基本技">基本技</button>
       <button onclick="toggleType('小技')" id="type-小技">小技</button>
       <button onclick="toggleType('サビ技')" id="type-サビ技">サビ技</button>
+      <button onclick="toggleType('合わせ技')" id="type-合わせ技">合わせ技</button>
     </div>
   </div>
 
