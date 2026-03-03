@@ -76,6 +76,7 @@ table {
   border-collapse: collapse;
   width:100%;
   min-width:500px;
+  table-layout: fixed;
 }
 
 th, td {
@@ -83,17 +84,33 @@ th, td {
   padding:10px;
   text-align:center;
   font-size:14px;
+  word-break: break-word;
+  white-space: normal;
 }
 
-th { background:#222; }
+th {
+  background:#222;
+}
 
+th:nth-child(1),
+td:nth-child(1) { width:35%; }
+
+th:nth-child(2),
+td:nth-child(2) { width:15%; }
+
+th:nth-child(3),
+td:nth-child(3) { width:20%; }
+
+th:nth-child(4),
+td:nth-child(4) { width:30%; }
+
+/* スマホ */
 @media (max-width:600px){
   button {
     flex:1 1 30%;
     font-size:13px;
     padding:10px 0;
   }
-
   th, td {
     padding:8px;
     font-size:12px;
@@ -111,7 +128,7 @@ th { background:#222; }
   <div class="filter-group">
     <strong>タイプ</strong>
     <div class="button-container">
-      <button onclick="toggleType('基本技')" id="type-基本技">基本技</button>
+      <button onclick="toggleType('基礎技')" id="type-基礎技">基礎技</button>
       <button onclick="toggleType('小技')" id="type-小技">小技</button>
       <button onclick="toggleType('サビ技')" id="type-サビ技">サビ技</button>
     </div>
