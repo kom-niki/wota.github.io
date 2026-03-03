@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ヲタ芸DB</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  background:#111;
+  color:white;
+  margin:0;
+  padding:15px;
+}
+
+h1 {
+  text-align:center;
+  font-size:clamp(20px, 4vw, 28px);
+}
+
+.filter-section {
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.filter-group {
+  margin:15px 0;
+}
+
+.button-container {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+}
+
+button {
+  padding:10px 14px;
+  background:#222;
+  border:1px solid #555;
+  color:white;
+  cursor:pointer;
+  border-radius:8px;
+  font-size:14px;
+  min-width:70px;
+}
+
+button.active {
+  background:#00ccff;
+  color:black;
+  border-color:#00ccff;
+}
+
+button.reset {
+  background:#aa3333;
+}
+
+input[type="text"]{
+  padding:10px;
+  width:90%;
+  max-width:300px;
+  border-radius:8px;
+  border:1px solid #555;
+  background:#222;
+  color:white;
+  margin-top:10px;
+  font-size:14px;
+}
+
+.table-wrapper {
+  overflow-x:auto;
+}
+
+table {
+  border-collapse: collapse;
+  width:100%;
+  min-width:500px;
+}
+
+th, td {
+  border:1px solid #444;
+  padding:10px;
+  text-align:center;
+  font-size:14px;
+}
+
+th { background:#222; }
+
+@media (max-width:600px){
+  button {
+    flex:1 1 30%;
+    font-size:13px;
+    padding:10px 0;
+  }
+
+  th, td {
+    padding:8px;
+    font-size:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<h1>ヲタ芸データベース</h1>
+
+<div class="filter-section">
+
+  <div class="filter-group">
+    <strong>タイプ</strong>
+    <div class="button-container">
+      <button onclick="toggleType('基礎技')" id="type-基礎技">基礎技</button>
+      <button onclick="toggleType('小技')" id="type-小技">小技</button>
+      <button onclick="toggleType('サビ技')" id="type-サビ技">サビ技</button>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <strong>拍数</strong>
+    <div class="button-container">
+      <button onclick="toggleBeat('2')" id="beat-2">2拍</button>
+      <button onclick="toggleBeat('4')" id="beat-4">4拍</button>
+      <button onclick="toggleBeat('6')" id="beat-6">6拍</button>
+      <button onclick="toggleBeat('8')" id="beat-8">8拍</button>
+      <button onclick="toggleBeat('16')" id="beat-16">16拍</button>
+      <button onclick="toggleBeat('32')" id="beat-32">32拍</button>
+      <button onclick="toggleBeat('other')" id="beat-other">その他</button>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <strong>技名検索</strong><br>
+    <input type="text" id="nameSearch" placeholder="技名を入力">
+  </div>
+
+  <button class="reset" onclick="resetFilter()">全解除</button>
+
+</div>
+
+<div class="table-wrapper">
+<table id="dataTable">
+<thead>
+<tr>
+<th>技名</th>
+<th>拍数</th>
+<th>タイプ</th>
+<th>メモ</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
+<script>
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwKmHnQdW0QRcrn1yJMpQrFisXyZCRJYj7oM79u58ki2pZTuhUPTVoojq0yRI382N_R9SsnlyahIdU/pub?output=csv";
+
+let allData = [];
+let selectedType = null;
+let selectedBeat = null;
+
+fetch(sheetURL)
+.then(res => res.text())
+.then(data => {
+    const rows = data.split("\n").slice(1);
+    rows.forEach(row => {
+        if(!row.trim()) return;
+        const cols = row.split(",");
+        allData.push(cols);
+    });
+    renderTable(allData);
+});
+
+function renderTable(data){
+    const tbody = document.querySelector("#dataTable tbody");
+    tbody.innerHTML = "";
+    data.forEach(cols=>{
+        const tr = document.createElement("tr");
+        for(let i=0;i<4;i++){
+            const td = document.createElement("td");
+            td.textContent = cols[i] || "";
+            tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+    });
+}
+
+function toggleType(type){
+    selectedType = (selectedType === type) ? null : type;
+    document.querySelectorAll("[id^='type-']").forEach(btn=>btn.classList.remove("active"));
+    if(selectedType) document.getElementById("type-"+selectedType).classList.add("active");
+    applyFilter();
+}
+
+function toggleBeat(beat){
+    selectedBeat = (selectedBeat === beat) ? null : beat;
+    document.querySelectorAll("[id^='beat-']").forEach(btn=>btn.classList.remove("active"));
+    if(selectedBeat) document.getElementById("beat-"+selectedBeat).classList.add("active");
+    applyFilter();
+}
+
+function applyFilter(){
+    const nameValue = document.getElementById("nameSearch").value.toLowerCase();
+
+    const filtered = allData.filter(cols=>{
+        const name = (cols[0] || "").toLowerCase();
+        const beat = cols[1];
+        const type = cols[2];
+
+        let nameMatch = name.includes(nameValue);
+        let beatMatch = true;
+        let typeMatch = true;
+
+        if(selectedType){
+            typeMatch = (type === selectedType);
+        }
+
+        if(selectedBeat){
+            if(selectedBeat === "other"){
+                beatMatch = !["2","4","6","8","16","32"].includes(beat);
+            } else {
+                beatMatch = (beat === selectedBeat);
+            }
+        }
+
+        return nameMatch && beatMatch && typeMatch;
+    });
+
+    renderTable(filtered);
+}
+
+function resetFilter(){
+    selectedType = null;
+    selectedBeat = null;
+    document.getElementById("nameSearch").value = "";
+    document.querySelectorAll("button").forEach(btn=>btn.classList.remove("active"));
+    renderTable(allData);
+}
+
+document.getElementById("nameSearch").addEventListener("input", applyFilter);
+</script>
+
+</body>
+</html>
