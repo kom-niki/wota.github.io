@@ -6,116 +6,71 @@
 <title>ヲタ芸DB</title>
 
 <style>
-body {
-  font-family: sans-serif;
-  background:#111;
-  color:white;
-  margin:0;
-  padding:15px;
+
+body{
+background:#111;
+color:white;
+font-family:sans-serif;
+margin:0;
+padding:20px;
 }
 
-h1 {
-  text-align:center;
-  font-size:clamp(20px, 4vw, 28px);
+h1{
+text-align:center;
 }
 
-.filter-section {
-  text-align:center;
-  margin-bottom:20px;
+.filter{
+text-align:center;
+margin-bottom:20px;
 }
 
-.filter-group {
-  margin:15px 0;
+button{
+background:#222;
+border:1px solid #555;
+color:white;
+padding:8px 14px;
+margin:4px;
+border-radius:6px;
+cursor:pointer;
 }
 
-.button-container {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:8px;
+button.active{
+background:#00ccff;
+color:black;
 }
 
-button {
-  padding:10px 14px;
-  background:#222;
-  border:1px solid #555;
-  color:white;
-  cursor:pointer;
-  border-radius:8px;
-  font-size:14px;
-  min-width:80px;
+input{
+padding:8px;
+margin-top:10px;
+border-radius:6px;
+border:1px solid #555;
+background:#222;
+color:white;
+width:220px;
 }
 
-button.active {
-  background:#00ccff;
-  color:black;
-  border-color:#00ccff;
+.table-wrap{
+overflow-x:auto;
 }
 
-button.reset {
-  background:#aa3333;
+table{
+border-collapse:collapse;
+width:100%;
+table-layout:fixed;
 }
 
-input[type="text"]{
-  padding:10px;
-  width:90%;
-  max-width:300px;
-  border-radius:8px;
-  border:1px solid #555;
-  background:#222;
-  color:white;
-  margin-top:10px;
-  font-size:14px;
+th,td{
+border:1px solid #444;
+padding:8px;
+text-align:center;
+word-break:break-word;
+white-space:normal;
 }
 
-.table-wrapper {
-  overflow-x:auto;
+th{
+background:#222;
 }
 
-table {
-  border-collapse: collapse;
-  width:100%;
-  min-width:500px;
-  table-layout: fixed;
-}
-
-th, td {
-  border:1px solid #444;
-  padding:10px;
-  text-align:center;
-  font-size:14px;
-  word-break: break-word;
-  white-space: normal;
-}
-
-th {
-  background:#222;
-}
-
-/* 列幅固定 */
-th:nth-child(1),
-td:nth-child(1) { width:35%; }
-
-th:nth-child(2),
-td:nth-child(2) { width:15%; }
-
-th:nth-child(3),
-td:nth-child(3) { width:20%; }
-
-th:nth-child(4),
-td:nth-child(4) { width:30%; }
-
-@media (max-width:600px){
-  button {
-    flex:1 1 30%;
-    font-size:13px;
-    padding:10px 0;
-  }
-  th, td {
-    padding:8px;
-    font-size:12px;
-  }
-}
 </style>
 </head>
 
@@ -123,140 +78,196 @@ td:nth-child(4) { width:30%; }
 
 <h1>ヲタ芸データベース</h1>
 
-<div class="filter-section">
+<div class="filter">
 
-  <div class="filter-group">
-    <strong>タイプ</strong>
-    <div class="button-container">
-      <button onclick="toggleType('基本技')" id="type-基本技">基本技</button>
-      <button onclick="toggleType('小技')" id="type-小技">小技</button>
-      <button onclick="toggleType('サビ技')" id="type-サビ技">サビ技</button>
-      <button onclick="toggleType('合わせ技')" id="type-合わせ技">合わせ技</button>
-    </div>
-  </div>
+<div>
+<b>タイプ</b><br>
 
-  <div class="filter-group">
-    <strong>拍数</strong>
-    <div class="button-container">
-      <button onclick="toggleBeat('2')" id="beat-2">2拍</button>
-      <button onclick="toggleBeat('4')" id="beat-4">4拍</button>
-      <button onclick="toggleBeat('6')" id="beat-6">6拍</button>
-      <button onclick="toggleBeat('8')" id="beat-8">8拍</button>
-      <button onclick="toggleBeat('16')" id="beat-16">16拍</button>
-      <button onclick="toggleBeat('32')" id="beat-32">32拍</button>
-      <button onclick="toggleBeat('other')" id="beat-other">その他</button>
-    </div>
-  </div>
-
-  <div class="filter-group">
-    <strong>技名検索</strong><br>
-    <input type="text" id="nameSearch" placeholder="技名を入力">
-  </div>
-
-  <button class="reset" onclick="resetFilter()">全解除</button>
+<button onclick="toggleType('基本技')" id="type-基本技">基本技</button>
+<button onclick="toggleType('小技')" id="type-小技">小技</button>
+<button onclick="toggleType('サビ技')" id="type-サビ技">サビ技</button>
+<button onclick="toggleType('合わせ技')" id="type-合わせ技">合わせ技</button>
 
 </div>
 
-<div class="table-wrapper">
+<br>
+
+<div>
+<b>拍数</b><br>
+
+<button onclick="toggleBeat('2')" id="beat-2">2</button>
+<button onclick="toggleBeat('4')" id="beat-4">4</button>
+<button onclick="toggleBeat('6')" id="beat-6">6</button>
+<button onclick="toggleBeat('8')" id="beat-8">8</button>
+<button onclick="toggleBeat('16')" id="beat-16">16</button>
+<button onclick="toggleBeat('32')" id="beat-32">32</button>
+<button onclick="toggleBeat('other')" id="beat-other">その他</button>
+
+</div>
+
+<br>
+
+<input id="nameSearch" placeholder="技名検索">
+
+<br><br>
+
+<button onclick="resetFilter()">全解除</button>
+
+</div>
+
+
+<div class="table-wrap">
+
 <table id="dataTable">
+
 <thead>
-<tr>
-<th>技名</th>
-<th>拍数</th>
-<th>タイプ</th>
-<th>メモ</th>
-</tr>
+<tr></tr>
 </thead>
+
 <tbody></tbody>
+
 </table>
+
 </div>
+
 
 <script>
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwKmHnQdW0QRcrn1yJMpQrFisXyZCRJYj7oM79u58ki2pZTuhUPTVoojq0yRI382N_R9SsnlyahIdU/pub?output=csv";
 
-let allData = [];
-let selectedType = null;
-let selectedBeat = null;
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQwKmHnQdW0QRcrn1yJMpQrFisXyZCRJYj7oM79u58ki2pZTuhUPTVoojq0yRI382N_R9SsnlyahIdU/pub?gid=0&single=true&output=csv&t="+Date.now()
+
+let allData=[]
+let headers=[]
+
+let selectedType=null
+let selectedBeat=null
 
 fetch(sheetURL)
-.then(res => res.text())
-.then(data => {
-    const rows = data.split("\n").slice(1);
-    rows.forEach(row => {
-        if(!row.trim()) return;
-        const cols = row.split(",");
-        allData.push(cols);
-    });
-    renderTable(allData);
-});
 
-function renderTable(data){
-    const tbody = document.querySelector("#dataTable tbody");
-    tbody.innerHTML = "";
-    data.forEach(cols=>{
-        const tr = document.createElement("tr");
-        for(let i=0;i<4;i++){
-            const td = document.createElement("td");
-            td.textContent = cols[i] || "";
-            tr.appendChild(td);
-        }
-        tbody.appendChild(tr);
-    });
+.then(res=>res.text())
+
+.then(data=>{
+
+const rows=data.split(/\r?\n/).map(r=>r.split(","))
+
+headers=rows.shift()
+
+const headRow=document.querySelector("#dataTable thead tr")
+
+headers.forEach(h=>{
+const th=document.createElement("th")
+th.textContent=h
+headRow.appendChild(th)
+})
+
+allData=rows
+
+render(allData)
+
+})
+
+function render(data){
+
+const tbody=document.querySelector("#dataTable tbody")
+
+tbody.innerHTML=""
+
+data.forEach(row=>{
+
+const tr=document.createElement("tr")
+
+row.forEach(col=>{
+
+const td=document.createElement("td")
+td.textContent=col
+tr.appendChild(td)
+
+})
+
+tbody.appendChild(tr)
+
+})
+
 }
 
 function toggleType(type){
-    selectedType = (selectedType === type) ? null : type;
-    document.querySelectorAll("[id^='type-']").forEach(btn=>btn.classList.remove("active"));
-    if(selectedType) document.getElementById("type-"+selectedType).classList.add("active");
-    applyFilter();
+
+selectedType=(selectedType===type)?null:type
+
+document.querySelectorAll("[id^='type-']").forEach(b=>b.classList.remove("active"))
+
+if(selectedType)
+document.getElementById("type-"+selectedType).classList.add("active")
+
+applyFilter()
+
 }
 
 function toggleBeat(beat){
-    selectedBeat = (selectedBeat === beat) ? null : beat;
-    document.querySelectorAll("[id^='beat-']").forEach(btn=>btn.classList.remove("active"));
-    if(selectedBeat) document.getElementById("beat-"+selectedBeat).classList.add("active");
-    applyFilter();
+
+selectedBeat=(selectedBeat===beat)?null:beat
+
+document.querySelectorAll("[id^='beat-']").forEach(b=>b.classList.remove("active"))
+
+if(selectedBeat)
+document.getElementById("beat-"+selectedBeat).classList.add("active")
+
+applyFilter()
+
 }
 
 function applyFilter(){
-    const nameValue = document.getElementById("nameSearch").value.toLowerCase();
 
-    const filtered = allData.filter(cols=>{
-        const name = (cols[0] || "").toLowerCase();
-        const beat = cols[1];
-        const type = cols[2];
+const name=document.getElementById("nameSearch").value.toLowerCase()
 
-        let nameMatch = name.includes(nameValue);
-        let beatMatch = true;
-        let typeMatch = true;
+const result=allData.filter(row=>{
 
-        if(selectedType){
-            typeMatch = (type === selectedType);
-        }
+const tech=(row[0]||"").toLowerCase()
+const beat=row[1]
+const type=row[2]
 
-        if(selectedBeat){
-            if(selectedBeat === "other"){
-                beatMatch = !["2","4","6","8","16","32"].includes(beat);
-            } else {
-                beatMatch = (beat === selectedBeat);
-            }
-        }
+let nameMatch=tech.includes(name)
 
-        return nameMatch && beatMatch && typeMatch;
-    });
+let beatMatch=true
+let typeMatch=true
 
-    renderTable(filtered);
+if(selectedType)
+typeMatch=(type===selectedType)
+
+if(selectedBeat){
+
+if(selectedBeat==="other"){
+beatMatch=!["2","4","6","8","16","32"].includes(beat)
+}
+else{
+beatMatch=(beat===selectedBeat)
+}
+
+}
+
+return nameMatch && beatMatch && typeMatch
+
+})
+
+render(result)
+
 }
 
 function resetFilter(){
-    selectedType = null;
-    selectedBeat = null;
-    document.getElementById("nameSearch").value = "";
-    document.querySelectorAll("button").forEach(btn=>btn.classList.remove("active"));
-    renderTable(allData);
+
+selectedType=null
+selectedBeat=null
+
+document.getElementById("nameSearch").value=""
+
+document.querySelectorAll("button").forEach(b=>b.classList.remove("active"))
+
+render(allData)
+
 }
 
-document.getElementById("nameSearch").addEventListener("input", applyFilter);
+document.getElementById("nameSearch").addEventListener("input",applyFilter)
+
 </script>
 
 </body>
