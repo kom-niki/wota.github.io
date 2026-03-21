@@ -71,6 +71,32 @@ th{
 background:#222;
 }
 
+/* ===== 列幅（ここが今回のメイン） ===== */
+
+/* 技名（少し広め） */
+th:nth-child(1),
+td:nth-child(1){
+width:20%;
+}
+
+/* 拍数（最大3文字） */
+th:nth-child(2),
+td:nth-child(2){
+width:4ch;
+}
+
+/* タイプ（最大4文字） */
+th:nth-child(3),
+td:nth-child(3){
+width:6ch;
+}
+
+/* それ以降（メモなど）は全部可変 */
+th:nth-child(n+4),
+td:nth-child(n+4){
+width:auto;
+}
+
 </style>
 </head>
 
@@ -115,21 +141,16 @@ background:#222;
 
 </div>
 
-
 <div class="table-wrap">
 
 <table id="dataTable">
-
 <thead>
 <tr></tr>
 </thead>
-
 <tbody></tbody>
-
 </table>
 
 </div>
-
 
 <script>
 
@@ -143,9 +164,7 @@ let selectedType=null
 let selectedBeat=null
 
 fetch(sheetURL)
-
 .then(res=>res.text())
-
 .then(data=>{
 
 const rows=data.split(/\r?\n/).map(r=>r.split(","))
@@ -174,14 +193,14 @@ tbody.innerHTML=""
 
 data.forEach(row=>{
 
+if(row.length===1 && row[0]==="") return
+
 const tr=document.createElement("tr")
 
 row.forEach(col=>{
-
 const td=document.createElement("td")
 td.textContent=col
 tr.appendChild(td)
-
 })
 
 tbody.appendChild(tr)
